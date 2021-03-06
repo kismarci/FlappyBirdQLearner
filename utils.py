@@ -3,12 +3,14 @@
 Created on Tue Apr 23 23:41:16 2019
 
 @author: Marci
-Plot scores for visualisation and run multiple instances of flappy.py for faster training
+Plot scores to visualize performance of an agent.
+Run multiple instances of flappy.py for faster training.
 """
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+#-------------------Plotting scores-------------------------------------------------------
 scores=pd.read_csv('q_learning_scores.csv')
 scores=scores.iloc[:,:].values
 plt.scatter(range(len(scores)),scores, s=2)
@@ -27,7 +29,7 @@ plt.plot(x_axis,means,label='average score')
 plt.legend()
 
 
-#---run multiple instances of flappy bird-------------------------------
+#---------------------run multiple instances of flappy bird-------------------------------
 import sys
 import subprocess
 
