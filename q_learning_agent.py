@@ -8,7 +8,7 @@ Q learning player bot. This script contains the class of the Q learning agent, a
 import numpy as np 
 from collections import defaultdict 
 import pickle
-Save_Score_File = "q_learning_scores.csv"
+Save_Score_File = "saver/q_learning_scores.csv"
 
 #Q_first = defaultdict()
        
@@ -33,7 +33,7 @@ class q_learning_agent(object):
 
     def __load_qvalues(self):
         #loads Q table as default dict
-        with open("qvalues", "rb") as f:
+        with open("saver/qvalues", "rb") as f:
              self.Q=pickle.load(f)
     
     def __state_round(self, number, base):
@@ -76,11 +76,11 @@ class q_learning_agent(object):
         
     def _save_q_values(self,first_run=False):
         if first_run: 
-            with open('qvalues', 'wb') as f:
+            with open('saver/qvalues', 'wb') as f:
                 self.Q_first[self.first_state][self.action]=0
                 pickle.dump(self.Q_first, f)
         else:
-            with open('qvalues', 'wb') as f:
+            with open('saver/qvalues', 'wb') as f:
                 pickle.dump(self.Q, f)
     
     def createEpsilonGreedyPolicy(self, Q, num_actions): 

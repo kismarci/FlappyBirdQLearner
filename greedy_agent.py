@@ -5,7 +5,7 @@ Created on Sat Apr 20 22:44:55 2019
 @author: Marci
 Simpliest Greedy Agent, flaps every time the ydif is smaller the a set threshold, no learning is done.
 """
-Save_Score_File = "greedy_scores.csv"
+Save_Score_File = "saver/greedy_scores.csv"
 
 class greedy_agent(object):
     def __init__(self):

@@ -11,7 +11,7 @@ from q_learning_agent import q_learning_agent
 import os
 
 TAG = "" if len(sys.argv) <= 1 else sys.argv[1]
-dumping_rate=50 #after how many iteration update the Q table csv
+dumping_rate=10 #after how many iteration update the Q table csv
 #initialize the agent
 #agent=greedy_agent()
 agent=q_learning_agent()
