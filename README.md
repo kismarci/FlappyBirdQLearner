@@ -4,7 +4,7 @@ Implementation of the Flappy Bird game with [pygame](https://www.pygame.org/news
 This work was done for a university assignement and it is based on [FlapPyBird](https://github.com/sourabhv/FlapPyBird) and [flappybird-qlearning-bot](https://github.com/chncyhn/flappybird-qlearning-bot).
 
 
-# Dependencies
+## Dependencies
 To run the code you'll need the following packages:
 
 * pygame
@@ -19,7 +19,7 @@ Normally the only package that you'll need to install additionally is pygame, wh
     
     pip install pygame
 
-# Running
+## Running
 'flappy.py'-Main file, runs the game with visual display, either you or the AI agent can play the game 
 
 'greedy_agent.py'-Greedy agent class
