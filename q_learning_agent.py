@@ -9,8 +9,6 @@ import numpy as np
 from collections import defaultdict 
 import pickle
 Save_Score_File = "saver/q_learning_scores.csv"
-
-#Q_first = defaultdict()
        
 
 class q_learning_agent(object):

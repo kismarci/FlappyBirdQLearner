@@ -12,9 +12,14 @@ import os
 
 TAG = "" if len(sys.argv) <= 1 else sys.argv[1]
 dumping_rate=10 #after how many iteration update the Q table csv
-#initialize the agent
-#agent=greedy_agent()
-agent=q_learning_agent()
+
+#initialize the agents
+agents={'greedy': greedy_agent(),
+            'Q': q_learning_agent()}
+
+#chose agent
+agent_name='greedy'
+agent=agents[agent_name]
 
 # ctrl + c
 import signal
@@ -141,7 +146,7 @@ def main():
         crashInfo = mainGame(start_info,played_games)
         showGameOverScreen(crashInfo)
         played_games += 1
-        if played_games % dumping_rate == 0:
+        if played_games % dumping_rate == 0 and agent_name!='greedy':
             agent._save_q_values()
 
 def start_game():
@@ -161,7 +166,6 @@ def flap(playery, playerFlapAcc):
     if playery > -2 * IMAGES['player'][0].get_height():
         return playerFlapAcc, True
         
-#xdif_l,ydif_l,yvel_l=[],[],[]
 def mainGame(start_info, played_games):
     score = playerIndex = loopIter = 0
     playerIndexGen = start_info['playerIndexGen']
@@ -214,9 +218,9 @@ def mainGame(start_info, played_games):
         xdif = myPipe['x'] + IMAGES['pipe'][0].get_width() - playerx
         ydif = myPipe['y'] - playery - IMAGES['player'][0].get_height()
 
-        move = agent.act(xdif, ydif, playerVelY) #*
+        move = agent.act(xdif, ydif, playerVelY) 
 
-        if move and playery > -2 * IMAGES['player'][0].get_height(): #*
+        if move and playery > -2 * IMAGES['player'][0].get_height(): 
             playerVelY, playerFlapped = flap(playery, playerFlapAcc) 
     
 
@@ -248,20 +252,19 @@ def mainGame(start_info, played_games):
         
         new_xdif = myPipe['x'] + IMAGES['pipe'][0].get_width() - playerx
         new_ydif = myPipe['y'] - playery - IMAGES['player'][0].get_height() 
-        agent.get_new_state(new_xdif, new_ydif, playerVelY) #observe new state 
+        if(agent_name!='greedy'):
+            agent.get_new_state(new_xdif, new_ydif, playerVelY) #observe new state 
         
         # check for crash here
         crashTest = checkCrash({'x': playerx, 'y': playery, 'index': playerIndex},
                             upperPipes, lowerPipes)
         
-#        xdif_l.append(xdif)
-#        ydif_l.append(ydif)
-#        yvel_l.append(playerVelY)
 
         if crashTest[0]:
-            agent.dead(score) #*
-            if played_games %10 ==0: print(score)
-            agent.update_Q_table(alive=False)
+            agent.dead(score) 
+            if played_games %10 ==0: print('Score: ', score)
+            if(agent_name!='greedy'):
+                agent.update_Q_table(alive=False)
             return {
                 'y': playery,
                 'groundCrash': crashTest[1],
@@ -271,7 +274,8 @@ def mainGame(start_info, played_games):
                 'score': score,
                 'playerVelY': playerVelY,
             }
-        else:  agent.update_Q_table()#*
+        else:
+            if(agent_name!='greedy'): agent.update_Q_table()
     
         # add new pipe when first pipe is about to touch left of screen
         if 0 < upperPipes[0]['x'] < 5:
@@ -305,9 +309,6 @@ def showGameOverScreen(crashInfo):
     score = crashInfo['score']
     playerx = SCREENWIDTH * 0.2
     playery = crashInfo['y']
-    playerHeight = IMAGES['player'][0].get_height()
-    playerVelY = crashInfo['playerVelY']
-    playerAccY = 2
     
     basex = crashInfo['basex']
     
@@ -323,14 +324,7 @@ def showGameOverScreen(crashInfo):
                     sys.exit()
                 if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
                     return
-            
-            # player y shift
-            '''if playery + playerHeight < BASEY - 1:
-                playery += min(playerVelY, BASEY - playery - playerHeight)
-    
-            # player velocity change
-            if playerVelY < 15:
-                playerVelY += playerAccY'''
+        
     
             # draw sprites
             SCREEN.blit(IMAGES['background'], (0,0))
